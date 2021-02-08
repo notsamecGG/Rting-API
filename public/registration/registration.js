@@ -55,7 +55,7 @@ async function Register(data){
         body: JSON.stringify(data)
     };
 
-    const response = await fetch(`http://localhost:5501/register`, options);
+    const response = await fetch(`https://sheldon-rating.herokuapp.com/register`, options);
     const r_data = await response.json();
 
     console.log(r_data);

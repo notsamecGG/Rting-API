@@ -9,7 +9,7 @@ LikesCounter_Main(likes, dislikes)
 GetValues('thisurl.ok');
 
 async function CounterInteraction(url, options){
-  const response = await fetch(`http://localhost:5501/${url}/rating`, options);
+  const response = await fetch(`https://sheldon-rating.herokuapp.com/${url}/rating`, options);
   const r_data = await response.json();
 
   console.log(r_data);
