@@ -1,5 +1,3 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
 const express = require('express');
 const queue = require('express-queue');
 const like = require('./Modules/like_module');
@@ -8,8 +6,6 @@ const AccActions = require('./Modules/account_actions');
 const consts = require('./Modules/const');
 const app = express();
 require('dotenv').config();
-
-admin.initializeApp(functions.config().firebase);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Port: ${port}`))
@@ -113,5 +109,3 @@ app.post('/login', async (request, response) => {
         return;
     });
 });
-
-exports.appO = functions.https.onRequest(app);

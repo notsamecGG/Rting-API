@@ -1,7 +1,7 @@
 {
-  "name": "sheldon-server",
+  "name": "rting-server",
   "version": "1.0.0",
-  "description": "Server to handle tasks from sheldon extension",
+  "description": "Server to handle tasks from rting extension",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -9,7 +9,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-queue": "0.0.12",
-    "firebase-admin": "^9.5.0",
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
     "nedb": "^1.8.0",
@@ -22,17 +21,13 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "firebase emulators:start --only functions",
-    "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
   },
   "engines": {
     "node": "14"
   },
   "keywords": [
-    "sheldon",
+    "rating",
     "knowledge",
     "evaluation",
     "web",

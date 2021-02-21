@@ -1,4 +1,4 @@
-exports.URL = 'https://sheldon-rating.firebaseapp.com/'
+exports.URL = 'https://rting.herokuapp.com/'
 
 exports.TOKEN_ACTIONS = {
     REPEAT: 0,
