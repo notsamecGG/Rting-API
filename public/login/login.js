@@ -1,3 +1,9 @@
+import {URL} from '../modules/public_const.js';
+import {HandleResponse} from '../modules/response_handlers.js';
+const display = document.getElementById('error_display');
+
+document.getElementById('submit').addEventListener('click', ButtonCallback);
+
 async function ButtonCallback(){
     const entry = document.getElementById("entry").value;
     const password = document.getElementById("password").value;
@@ -22,8 +28,8 @@ async function Login(data){
         body: JSON.stringify(data)
     };
 
-    const response = await fetch(`https://sheldon-rating.herokuapp.com/login`, options);
+    const response = await fetch(`${URL}login`, options);
     const r_data = await response.json();
 
-    console.log(r_data);
+    HandleResponse(display, r_data, window);
 }

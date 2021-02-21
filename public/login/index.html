@@ -7,21 +7,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log In</title>
-  <script src="./login.js"></script>
+  <script type="module" src="./login.js"></script>
+  <link rel="stylesheet" href="../Styles/accstyle.css">
 </head>
 <body>
-  <main>
-    <div>
-      <label for="entry">Username / E-mail: </label>
-      <input type="text" name="entry" id="entry" placeholder="SamecGG">    
-    </div>
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" name="password" id="password" placeholder="Password">
-    </div>
-    <button type="submit" onclick="ButtonCallback()">Login</button>
-  </main>
-  <a href="../registration/index.html">Register</a>
-  <a href="../index.html">Home</a>
+  <menu>
+  <div class="row">
+    <label class="item" for="entry">Username: <a class="info" data-tooltip="Enter username or email">*</a></label>
+    <input class="item input" type="text" name="entry" id="entry" placeholder="SamecGG">  
+  </div>
+  <div class="row">
+    <label class="item" for="password">Password: <a class="info" data-tooltip="Enter your favourite password ;)">*</a></label>
+    <input class="item input" type="password" name="password" id="password" placeholder="Password">
+  </div>
+  <p class="row" id="error_display"></p>
+  <div class="button white" id="submit" type="submit">Login</div>
+  </menu>
+  <footer>
+    <a href="../registration/index.html">Register</a>
+    <a href="../index.html">Home</a>
+  </footer>
 </body>
 </html>

@@ -1,0 +1,26 @@
+<!-- RATING -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheldon</title>
+  <link rel="stylesheet" href="../Styles/ratingstyle.css">
+  <script type="module" src="popup.js" defer></script>
+</head>
+<body>
+<div style="display: flex; width: 100%; justify-content: space-around;">
+  <img class="clickable" id="like" src="../Pictures/like.png" width="50px" alt="Like">
+  <img class="clickable" id="dislike" src="../Pictures/dislike.png" width="50px" alt="Dislike">
+</div> 
+<div style="display: flex; justify-content: space-around; height: 30vh; max-height: 40px; margin-bottom: 5vh;">
+  <p style="font-weight: bolder;" id="like_counter">0</p>
+  <p style="font-weight: bolder;" id="dislike_counter">0</p>
+</div>
+<div class="" style="display: flex;">
+  <div class="graph" id="likes"></div>
+  <div class="graph" id="dislikes"></div>
+</div> 
+</body>
+</html>

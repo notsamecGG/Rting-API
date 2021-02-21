@@ -1,48 +1,103 @@
-const { copyFileSync } = require('fs');
+//ltt - Long term token
 const Datastore = require('nedb-async');
+const TokenGenerator = require('uuid-token-generator');
+const consts = require('./const');
 
 const database = new Datastore.AsyncNedb(`Accounts/all_data.db`);
 database.loadDatabase();
+const tokgen = new TokenGenerator();
 
 exports.Register = async function(username, firstname, email, password, ip) {
     if(await CheckMail(email)){
-        return {status: 'failed', message: 'Email is already used'};
+        throw consts.ERRORS.EMAIL_USED;
     } else if (await CheckUsername(username)){
-        return {status: 'failed', message: 'Username is already used'};
+        throw consts.ERRORS.USERNAME_USED;
     } else {
+        const token = tokgen.generate();
+        const ltt = new TokenGenerator(256).generate();
         await database.asyncInsert({
             _username: username, 
             _firstname: firstname, 
             _email: email,
             _password: password, 
+            _token: token,
+            _ltt: ltt,
             _ips: [ip]});
-        return {status: 'success', message: ''};
+        const id = await database.asyncFindOne({_username: username})._id;
+        return {userid: id, token: token, ltt: ltt};
     }
 }
 
 async function CheckMail(email) {
-    let result = await database.asyncFind({_email: email});
-    result = result[0];
+    let result = await database.asyncFindOne({_email: email});
     if (result) return true;
     else return false;
 }
 
 async function CheckUsername(username) {
-    let result = await database.asyncFind({_username: username});
-    result = result[0];
+    let result = await database.asyncFindOne({_username: username});
     if (result) return true;
     else return false;
 }
 
 exports.Login = async function(entry, action, password, ip){
-    var account = (action) 
+    var acc = (action) 
     ? (await database.asyncFindOne({_email: entry})) 
     : (await database.asyncFindOne({_username: entry}));
-    if(account && password == account._password){
-        if(!account._ips.includes(ip)) {
+    if(acc && password == acc._password){
+        if(!acc._ips.includes(ip)) {
             //verify
-            database.asyncUpdate({_id: account._id}, { $push: {_ips: ip}}, {});
+            database.asyncUpdate({_id: acc._id}, { $push: {_ips: ip}}, {});
         }
-        return {status: 'success', message: account._id};
+        return {userid: acc._id, token: acc._token, ltt: acc._ltt};
+    } else {
+        throw consts.ERRORS.BAD_ENTRY;
     }
 }
+
+exports.TokenVerify = async function(data, ip) {
+    var userid = data.userid;
+    var token = data.token;
+    var finalmessage = {};
+    if(userid) {
+        if(!token) {
+            token = GenerateToken(userid, data.longTermToken);
+            finalmessage.token = token;
+        }
+        /*if(!token) {
+            throw consts.ERRORS.BAD_ENTRY;
+        }*/
+    } else {
+        throw consts.ERRORS.DATA_NOT_AVIABLE;
+    }
+
+    var acc = await database.asyncFindOne({_id: userid});
+    if(acc){
+        if(!acc._ips.includes(ip)) {
+            //verify
+            database.asyncUpdate({_id: acc._id}, { $push: {_ips: ip}}, {});
+        }
+        if(acc._token == token){
+            return finalmessage;
+        }
+    } else {
+        throw consts.ERRORS.BAD_ENTRY;
+    }
+}
+
+async function GenerateToken(userid, longTermToken) {
+    var acc = await database.asyncFindOne({_userid: userid});
+    if(acc._ltt == longTermToken) {
+        const token = tokgen.generate();
+        UpdateToken(userid, token);
+        return token;
+    }
+
+    return;
+}
+
+async function UpdateToken(userid, token) {
+    database.asyncUpdate({_id: userid}, { $set: {_token: token}}, {});
+}
+
+//pass token from register and login

@@ -4,39 +4,39 @@ exports.Counter = class{
     constructor(url){
         this.like_filename = `./Pages/${url}/like_counter.txt`;
         this.dislike_filename = `./Pages/${url}/dislike_counter.txt`;
+        this.path = `./Pages/${url}`;
         this.url = url;
         this.likes = 0;
         this.dislikes = 0;  
 
         this._getValues();
     }
+
+    get values() {
+        return this._getValues();
+    }
     
     _getValues = async () => {
         const like_filename = this.like_filename;
         const dislike_filename = this.dislike_filename;
+        const path = this.path;
 
-        if(!fs.existsSync(like_filename)){
-            writeFile(like_filename)
-                .then(() => {})
-                .catch(() => console.error("Couldn't write likes for " + this.url));
+        let Check = async (filename) => {
+            if(!fs.existsSync(path))
+                await fs.mkdirSync(path);
+            if(!fs.existsSync(filename))
+                await fs.writeFileSync(filename, '0');
+            
+            return await fs.readFileSync(filename, 'utf-8');
         }
-        if(!fs.existsSync(dislike_filename)){
-            writeFile(dislike_filename)
-                .then(() => {})
-                .catch(() => console.error("Couldn't write dislikes for " + this.url));
-        }
-        
-        let likes = parseInt(await fs.readFileSync(like_filename), '10');
-        let dislikes = parseInt(await fs.readFileSync(dislike_filename), '10');
-        
+
+        const likes = parseInt(await Check(like_filename), '10');
+        const dislikes = parseInt(await Check(dislike_filename), '10');
+
         this.likes = likes;
         this.dislikes = dislikes;
 
         return {likes: likes, dislikes: dislikes};
-
-        async function writeFile(filename) {
-            return await fs.writeFile(filename, '0', () => {});
-        }
     }
 
     _addValue = async (action, value) => {
@@ -57,7 +57,7 @@ exports.Counter = class{
     remove = async action => await this._addValue(action, -1);
 }
 
-async function AddValueToFile(filename, value, data, callback_obj){
+async function AddValueToFile(filename, data, value, callback_obj){
     const action = callback_obj.action;
     const count = data + value;
     return await writeFile();

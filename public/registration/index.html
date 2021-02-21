@@ -7,34 +7,37 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration</title>
-  <script src="./registration.js"></script>
+  <link rel="stylesheet" href="../Styles/accstyle.css">
+  <script type="module" src="./registration.js" defer></script>
 </head>
 <body>
-  <main>
-    <div>
-      <label for="username">Username: </label>
-      <input type="text" name="username" id="username" placeholder="SamecGG">    
-    </div>
-    <div>
-      <label for="firstname">Firstname: </label>
-      <input type="text" name="firstname" id="firstname" placeholder="Sam">    
-    </div>
-    <div>
-      <label for="email">Email: </label>
-      <input type="email" name="email" id="email" placeholder="sam@domain.com">
-    </div>
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" name="password" id="password" placeholder="Password">
-    </div>
-    <div>
-      <label for="confirm">Confirm Password: </label>
-      <input type="password" name="confirm" id="confirm" placeholder="Password">
-    </div>
-
-    <button type="submit" onclick="ButtonCallback()">Register</button>
-  </main>
+<menu>
+<div class="row">
+  <label class="item" for="username">Username: <a class="info" data-tooltip="Only one account with this username can exist">*</a></label>
+  <input class="item input yellow" type="text" name="username" id="username" placeholder="SamecGG">    
+</div>
+<div class="row">
+  <label class="item" for="firstname">Firstname: <a class="info" data-tooltip="This is how we will call you">*</a></label>
+  <input class="item input yellow" type="text" name="firstname" id="firstname" placeholder="Sam">    
+</div>
+<div class="row">
+  <label class="item" for="email">Email: <a class="info" data-tooltip="Enter valid email, we will be verifying it">*</a></label>
+  <input class="item input yellow" type="email" name="email" id="email" placeholder="sam@domain.com">
+</div>
+<div class="row">
+  <label class="item" for="password">Password: <a class="info" data-tooltip="Your password shouldn't be password">*</a></label>
+  <input class="item input yellow" type="password" name="password" id="password" placeholder="Password">
+</div>
+<div class="row">
+  <label class="item" for="confirm">Confirm Password: <a class="info" data-tooltip="Please enter same password again, thanks">*</a></label>
+  <input class="item input yellow" type="password" name="confirm" id="confirm" placeholder="Password">
+</div>
+<p class="row" id="error_display"></p>
+<div class="button white yellow" id="submit" type="submit">Register</div>
+</menu>
+<footer>
   <a href="../login/index.html">Login</a>
   <a href="../index.html">Home</a>
+</footer>
 </body>
 </html>

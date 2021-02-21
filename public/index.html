@@ -1,78 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sheldon</title>
-  <style>
-    .centered {
-        justify-content: center;
-    }
-
-    .clickable {
-        cursor: pointer;
-    }
-
-    .clickable:active {
-        width: 52px;
-    }
-
-    .graph-container {
-        height: 10px;
-        padding: 3px;
-        display: grid;
-        grid-template-columns: auto auto;
-    }
-
-    .graph-item {
-        width: 100%;
-        height: 4px;
-        display: inline-grid;
-    }
-
-    .graph-likes {
-        background-color: rgba(0, 98, 255, 0.404);
-    }
-
-    .graph-dislikes {
-        height: 4px;
-        background-color: rgba(255, 0, 0, 0.411);
-    }
-
-    .grid-container {
-        width: 100px;
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-template-rows: 30px 32px auto;
-    } 
-
-    .grid-item {
-        display: inline-grid;
-    }
-
-    .stretched {
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
-
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-    }
-  </style>
-  <script src="./Scripts/popup.js" defer></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
 </head>
 <body>
-  <form class="grid-container" method="post" action="/" id="f">  
-    <img class="grid-item clickable" id="like" src="Pictures/like.png" width="50px" alt="Like" onclick="Like('thisurl.ok', 1)">
-    <img class="grid-item clickable" id="dislike" src="Pictures/dislike.png" width="50px" alt="Dislike" onclick="Like('thisurl.ok', -1)">
-    <p class="grid-item centered" id="like_counter">0</p>
-    <p class="grid-item centered" id="dislike_counter">0</p>
-    <div class="grid-item stretched graph-container">
-      <div class="graph-item graph-likes"></div>
-      <div class="graph-item graph-dislikes"></div>
-    </div>
-  </form>
-  <a href="./login/index.html">Login</a>
-  <a href="./registration/index.html">Register</a>
+    Lol gg noob
 </body>
 </html>

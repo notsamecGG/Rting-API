@@ -1,11 +1,15 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 const express = require('express');
 const queue = require('express-queue');
 const like = require('./Modules/like_module');
 const c = require('./Modules/counter_module');
 const AccActions = require('./Modules/account_actions');
-const { response, request } = require('express');
+const consts = require('./Modules/const');
 const app = express();
 require('dotenv').config();
+
+admin.initializeApp(functions.config().firebase);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Port: ${port}`))
@@ -13,34 +17,54 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
-app.post('/:url/rating', async (request, response) => {
-    const data = request.body;
-    const url = request.params.url;
-    const userid = data.user;
-    const action = data.action;
+app.post('/rating', (request, response) => {
+    const url = request.query.url;
+    const body = request.body;
+    const cookies = body.accdata;
 
-    const obj = await like.CheckEntries(url, userid, action);
+    AccActions.TokenVerify(cookies, request.ip)
+    .then(async (_) => {
+        console.log(cookies);
+        if(!cookies.token){
+            response.json({
+                status: consts.STATUSES.FAILED, 
+                token: cookies.token
+            });
+            return;
+        }
 
-    response.json({
-        status: 'succes',
-        actual_action: obj.action,
-        likes: obj.likes,
-        dislikes: obj.dislikes
+        const userid = cookies.userid;
+        const action = body.action;
+    
+        const obj = await like.CheckEntries(url, userid, action);
+    
+        return response.json({
+            status: consts.STATUSES.SUCCESS,
+            actual_action: obj.action,
+            likes: obj.likes,
+            dislikes: obj.dislikes
+        });
+    })
+    .catch(async (err) => { 
+        return response.json({
+            status: consts.STATUSES.FAILED,
+            err: err
+        });
     });
 });
 
-app.get('/:url/rating', async (request, response) => {
-    const url = request.params.url;
-    const counter = await new counter.Counter(url)._getValues();
+app.get('/rating', async (request, response) => {
+    const url = request.query.url;
+    const counter = await new c.Counter(url).values;
 
     response.json({
-        status: 'succes',
+        status: consts.STATUSES.SUCCESS,
         likes: counter.likes ,
         dislikes: counter.dislikes 
     });
 });
 
-app.post('/register', async (request, response) => {
+app.post('/registration', async (request, response) => {
     const data = request.body;
     const username = data._username;
     const firstname = data._firstname;
@@ -48,13 +72,19 @@ app.post('/register', async (request, response) => {
     const password = data._password; 
     const ip = request.ip;
 
-    const obj = await AccActions.Register(username, firstname, email, password, ip)
-
-    response.json({
-        status: 'succes',
-        actual_action: obj.action,
-        likes: obj.likes,
-        dislikes: obj.dislikes
+    AccActions.Register(username, firstname, email, password, ip)
+    .then((accdata) => {
+        response.json({
+            status: consts.STATUSES.SUCCESS,
+            data: {userid: accdata.userid, ltt: accdata.ltt}, 
+            token: accdata.token
+        });
+    })
+    .catch((err) => {
+        return response.json({
+            status: consts.STATUSES.FAILED,
+            msg: err
+        })
     });
 });
 
@@ -65,7 +95,23 @@ app.post('/login', async (request, response) => {
     const password = data._password; 
     const ip = request.ip;
 
-    const obj = await AccActions.Login(entry, action, password, ip);
-
-    response.json(obj);
+    AccActions.Login(entry, action, password, ip)
+    .then((accdata) => {
+        console.log(1);
+        response.json({
+            status: consts.STATUSES.SUCCESS, 
+            data: {userid: accdata.userid, ltt: accdata.ltt}, 
+            token: accdata.token
+        });
+        return;
+    })
+    .catch((err) => {
+        response.json({
+            status: consts.STATUSES.FAILED,
+            msg: {code: err.code, message: err.message}
+        });
+        return;
+    });
 });
+
+exports.appO = functions.https.onRequest(app);
