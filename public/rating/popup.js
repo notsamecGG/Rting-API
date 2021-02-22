@@ -24,6 +24,7 @@ window.onmessage = (e) => {
 };
 
 async function CounterInteraction(options){
+  console.log({pure: url_array[0], sliced: url_array[0], 1: url_array[1], full: `${URL}rating?${url_array[1]}`});
   const response = await fetch(`${URL}rating?${url_array[1]}`, options);
   const r_data = await response.json();
 
