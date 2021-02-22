@@ -31,5 +31,5 @@ async function Login(data){
     const response = await fetch(`${URL}login`, options);
     const r_data = await response.json();
 
-    HandleResponse(display, r_data, window);
+    HandleResponse(display, r_data);
 }

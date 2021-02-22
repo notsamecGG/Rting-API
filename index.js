@@ -79,7 +79,7 @@ app.post('/registration', async (request, response) => {
     .catch((err) => {
         return response.json({
             status: consts.STATUSES.FAILED,
-            msg: err
+            msg: {message: err.message, code: err.code}
         })
     });
 });

@@ -7,7 +7,9 @@ const database = new Datastore.AsyncNedb(`Accounts/all_data.db`);
 database.loadDatabase();
 const tokgen = new TokenGenerator();
 
-exports.Register = async function(username, firstname, email, password, ip) {
+module.exports = { Register: Register,Login: Login, TokenVerify: TokenVerify }
+
+async function Register(username, firstname, email, password, ip) {
     if(await CheckMail(email)){
         throw consts.ERRORS.EMAIL_USED;
     } else if (await CheckUsername(username)){
@@ -24,7 +26,9 @@ exports.Register = async function(username, firstname, email, password, ip) {
             _ltt: ltt,
             _ips: [ip]});
         const id = await database.asyncFindOne({_username: username})._id;
-        return {userid: id, token: token, ltt: ltt};
+        console.log('x');
+        console.log(await Login(username, false, password, ip));
+        return await Login(username, false, password, ip);
     }
 }
 
@@ -40,7 +44,7 @@ async function CheckUsername(username) {
     else return false;
 }
 
-exports.Login = async function(entry, action, password, ip){
+async function Login(entry, action, password, ip){
     var acc = (action) 
     ? (await database.asyncFindOne({_email: entry})) 
     : (await database.asyncFindOne({_username: entry}));
@@ -55,7 +59,7 @@ exports.Login = async function(entry, action, password, ip){
     }
 }
 
-exports.TokenVerify = async function(data, ip) {
+async function TokenVerify(data, ip) {
     var userid = data.userid;
     var token = data.token;
     var finalmessage = {};

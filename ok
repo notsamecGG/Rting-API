@@ -1,0 +1,131 @@
+[33mcommit dc11e88fcc3e90018a78bded5fcdd6bfb3598d71[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 13:30:21 2021 +0100
+
+    URL change 3🌍
+    
+    URL string changed again
+
+[33mcommit 971cd4b39ca869ff8646506e4373f262d78e2c55[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 13:24:10 2021 +0100
+
+    URL changes 2🌍
+    
+    poupp.js string change again
+
+[33mcommit 3660d4034204eeeffd4a6aef9bcbeae46d2b8ae9[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 13:10:42 2021 +0100
+
+    URL changes 🌍
+    
+    URL remove from modules/const.js, and popup.js edited string that
+    will be sended
+
+[33mcommit 6d47095dae2d95fe8868d51a1ccdce746e354f95[m[33m ([m[1;31mheroku/master[m[33m)[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 12:39:32 2021 +0100
+
+    Bug fix 3 ❌🐞
+    
+    In public rating popup.js edit string that will be sended
+
+[33mcommit 4ba03da311a227d3d62156d525a289caec085972[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 11:47:16 2021 +0100
+
+    Package start scr added 📦
+    
+    Add "scripts": "start": "node index.js"; Then removed specifying engine
+
+[33mcommit 32a6f3f189ff2bac422e5b6037cb96dd26754237[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 09:55:17 2021 +0100
+
+    Package-lock.json regenerate
+    
+    Package-lock removed then generated with npm install
+    + some .gitignore changes
+
+[33mcommit d78749d1e284c8a3601355861487ceaba90cd3c5[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 09:32:16 2021 +0100
+
+    More bugfix ❌🐞
+    
+    Remove scripts from package.json, then some more firebase dependencies
+
+[33mcommit fc7687422b13efab56c4114b28cbf5af86ef9beb[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Mon Feb 22 09:28:33 2021 +0100
+
+    Bug fix
+    
+    Remove ',' from packa.json, it was stopping whole program
+
+[33mcommit 1b9da3fad9ba86fe0dd372dde82759326be51874[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Sun Feb 21 23:24:39 2021 +0100
+
+    Heroku ready v1 😊😎
+    
+    URLs in modules/const and public/modules/public_const change to
+    'https://rting.herokuapp.com/', .gitignore nodemodules retype to
+    nodemodules/, package.json rename, desc change, keywords too. Firebase
+    dependecies remove
+
+[33mcommit cea8538619b0aeb9799d808007ecc6da8b1ba26e[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Sun Feb 21 14:00:45 2021 +0100
+
+    README & LICENSE📜
+    
+    Add readme and license, completely removed firebase files
+
+[33mcommit 901c42b0bd808ce460e4494f77f5662fa4dabacd[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Sun Feb 21 13:26:07 2021 +0100
+
+    Remove firebase files
+    
+    Remove firebase files and changed form ignoring node_modules inside to
+    ignoring whole dir
+
+[33mcommit f82a70a9389695015be5cfa1a69ae69274bcb1ec[m
+Author: Sam <samuel.grulich@gmail.com>
+Date:   Sun Feb 21 13:17:56 2021 +0100
+
+    Initial Commit V2 🚀
+    
+    Starting properly use git
+
+[33mcommit 15e10392a31e5257b19d834267bc55b3d1fab0b6[m
+Author: SamecGG <samuel.grulich@gmail.com>
+Date:   Mon Feb 8 14:31:16 2021 +0100
+
+    Added references to other pages
+
+[33mcommit 0056563befad80213719ae81a8587d712c16abb8[m
+Author: SamecGG <samuel.grulich@gmail.com>
+Date:   Mon Feb 8 14:23:12 2021 +0100
+
+    Changed URLs of requests
+
+[33mcommit ac0eb6d0fba1b8854416c28469373a5df9c3345c[m
+Author: SamecGG <samuel.grulich@gmail.com>
+Date:   Mon Feb 8 12:46:10 2021 +0100
+
+    edited Procfile"
+
+[33mcommit 24845f5a969886459ea2ba8cb62b0836a36bbda8[m
+Author: SamecGG <samuel.grulich@gmail.com>
+Date:   Mon Feb 8 12:24:13 2021 +0100
+
+    Created Procfile
+
+[33mcommit 421bbec588de2e7988e968eca727d9fbb777e6d8[m
+Author: SamecGG <samuel.grulich@gmail.com>
+Date:   Mon Feb 8 12:18:53 2021 +0100
+
+    Ready for heroku

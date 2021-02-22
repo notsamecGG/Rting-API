@@ -1,4 +1,4 @@
-import {URL} from '../modules/public_const.js';
+import {URL} from './modules/public_const.js';
 
 const like_counter = document.getElementById("like_counter");
 const dislike_counter = document.getElementById("dislike_counter");
@@ -24,8 +24,7 @@ window.onmessage = (e) => {
 };
 
 async function CounterInteraction(options){
-  console.log({pure: url_array[0], sliced: url_array[0], 1: url_array[1], full: `${URL}rating?${url_array[1]}`});
-  const response = await fetch(`${URL}rating?${url_array[1]}`, options);
+  const response = await fetch(`rating?${url_array[1]}`, options);
   const r_data = await response.json();
 
   LikesCounter_Main(r_data.likes, r_data.dislikes);
@@ -40,6 +39,7 @@ async function Like(action){
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
     body: JSON.stringify(data)
   };
@@ -55,6 +55,7 @@ async function GetValues(){
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
   };
   CounterInteraction(options);

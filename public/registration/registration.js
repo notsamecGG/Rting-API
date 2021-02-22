@@ -62,6 +62,5 @@ async function Register(data){
     const response = await fetch(`${URL}registration`, options);
     const r_data = await response.json();
 
-    HandleResponse(display, r_data, window);
-    console.log(r_data);
+    HandleResponse(display, r_data);
 }
