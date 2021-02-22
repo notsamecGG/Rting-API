@@ -5,15 +5,6 @@ const dislike_counter = document.getElementById("dislike_counter");
 const like_graph = document.getElementById("likes");
 const dislike_graph = document.getElementById("dislikes");
 
-//Check if accessing page in browser
-/*
-if (frameElement == null) {
-    //change location or close
-    window.location = URL;
-    // or window.close();
-}
-*/
-
 //query extraction
 var url_array = window.location.href.split('?')
 
@@ -33,7 +24,8 @@ window.onmessage = (e) => {
 };
 
 async function CounterInteraction(options){
-  const response = await fetch(`${url_array[0].slice(0, -1)}?${url_array[1]}`, options);
+  console.log({pure: url_array[0], sliced: url_array[0], 1: url_array[1], full: `${url_array[0]}?${url_array[1]}`});
+  const response = await fetch(`?${url_array[1]}`, options);
   const r_data = await response.json();
 
   LikesCounter_Main(r_data.likes, r_data.dislikes);

@@ -1,5 +1,3 @@
-exports.URL = 'https://rting.herokuapp.com/'
-
 exports.TOKEN_ACTIONS = {
     REPEAT: 0,
     RESTART: 1
