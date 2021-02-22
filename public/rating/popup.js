@@ -33,7 +33,7 @@ window.onmessage = (e) => {
 };
 
 async function CounterInteraction(options){
-  const response = await fetch(`${url_array[0]}rating?${url_array[1]}`, options);
+  const response = await fetch(`${url_array[0].slice(0, -1)}?${url_array[1]}`, options);
   const r_data = await response.json();
 
   LikesCounter_Main(r_data.likes, r_data.dislikes);
