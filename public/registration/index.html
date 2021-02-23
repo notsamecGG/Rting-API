@@ -8,9 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration</title>
   <link rel="stylesheet" href="../Styles/accstyle.css">
+  <link rel="stylesheet" href="../Styles/main.css">
   <script type="module" src="./registration.js" defer></script>
 </head>
 <body>
+<ul class="navbar">
+<left class="side-container">
+  <li class="navbar-item" onclick="location.href='../home';"><a class="navbar-text">Home</a></li><hr>
+  <li class="navbar-item" onclick="location.href='../download';"><img class="navbar-text" style="width: 20px;" src="../Pictures/download.png" alt="download"></img></li>
+</left>
+<right class="side-container">
+  <li class="navbar-item" onclick="location.href='../login';"><a class="navbar-text">Login</a></li><hr>
+  <li class="navbar-item active" onclick="location.href='../registration';"><a class="navbar-text">Register</a></li>
+</right>
+</ul>
 <menu>
 <div class="row">
   <label class="item" for="username">Username: <a class="info" data-tooltip="Only one account with this username can exist">*</a></label>
@@ -35,9 +46,5 @@
 <p class="row" id="error_display"></p>
 <div class="button white yellow" id="submit" type="submit">Register</div>
 </menu>
-<footer>
-  <a href="../login/index.html">Login</a>
-  <a href="../index.html">Home</a>
-</footer>
 </body>
 </html>

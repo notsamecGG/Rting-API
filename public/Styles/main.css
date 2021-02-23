@@ -5,9 +5,9 @@
 :root {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    font-weight: normal;
+    font-weight: bold;
 
-    --border: solid 1px gray;
+    --border: solid 1px purple;
     --inner-glow: inset 0 0 2px
 }
 
@@ -15,8 +15,10 @@ body, html {
     margin: 0;
     padding: 0;
     min-width: 310px;
+    background-color: rgb(245, 245, 245);
 }
 
+/* NAVBAR-s */
 .navbar {
     position: -webkit-sticky;
     position: sticky;
@@ -37,8 +39,15 @@ body, html {
     box-shadow: 0 2px 5px lightgray;
 }
 
+left {
+    border-radius: 0 10px 10px 0;
+    padding-left: 1px;
+}
+
 right {
+    border-radius: 10px 0 0 10px;
     justify-content: flex-end;
+    padding-right: 1px;
 }
 
 .navbar-item {
@@ -50,36 +59,96 @@ right {
     height: 100%;
     width: 100%;
     cursor: pointer;
-    background-color: black;
-    border-left: var(--border)
+    background-color: white;
+    border-radius: 10px;
 }
 
 .navbar-item:hover {
     /*box-shadow: var(--inner-glow) darkgray;*/
-    background-color: rgb(61, 61, 61);
+    background-color: lightgray;
+    z-index: 998;
+    transform: scale(1.07, 1.07);
 }
 
 .navbar-item:active {
-    background-color: lightgray;
-}
-
-right .navbar-item {
-    border-left: solid 0 black;
-    border-right: var(--border)
+    background-color: white;
+    z-index: 998;
+    transform: scale(1.14, 1.14);
 }
 
 .navbar-text {
     margin: auto;
-    color: white;
+    color: black;
     justify-content: center;
     text-align: center;
     text-decoration: none;
 }
 
 .active {
-    background-color: white;
+    background-color: purple;
+    z-index: 999;
+    transform: scale(1.21, 1.21);
+}
+
+.active:hover {
+    z-index: 999;
+    transform: scale(1.21, 1.21);
 }
 
 .active a {
-    color: black;
+    color: white;
 }
+
+left li:last-child {
+    border-radius: 10px;
+}
+
+/* NAVBAR-e */
+/* MAIN-s */
+
+header {
+    width: 100%;
+    margin: 0 auto;
+    justify-self: center;
+    background-color: lightgreen;
+    border: 1px solid lightgray;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 1px 4px 1px lightgray;
+}
+
+h1 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 80px;
+    margin: 5% 0 5% 0;
+}
+
+main {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0.8%;
+    justify-self: center;
+    background-color: white;
+    font-size: 20px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px 1px lightgray;
+}
+
+.centered {
+    justify-self: center;
+    text-align: center;
+}
+
+/* MAIN-e */
+/* FOOTER-s */
+
+footer {
+    background-color: white;
+    width: 100%;
+    margin-top: 5px;
+    padding-top: 0;
+    min-height: 100px;
+}
+
+/* FOOTER-e */

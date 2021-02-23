@@ -8,16 +8,37 @@
   <title>Home</title>
 </head>
 <body>
+<header>
+  <h1>Rting</h1>
+</header>
 <ul class="navbar">
 <left class="side-container">
-  <li class="navbar-item active" data-button="home"><a class="navbar-text">Home</a></li>
-  <li class="navbar-item" data-button="download"><a class="navbar-text">Download</a></li>
+  <li class="navbar-item active" onclick="location.href='../home';"><a class="navbar-text">Home</a></li><hr>
+  <li class="navbar-item" onclick="location.href='../download';"><img class="navbar-text" style="width: 20px;" src="../Pictures/download.png" alt="download"></li>
 </left>
 <right class="side-container">
-  <li class="navbar-item" data-button="login"><a class="navbar-text">Login</a></li>
-  <li class="navbar-item" data-button="registration"><a class="navbar-text">Register</a></li>
+  <li class="navbar-item" onclick="location.href='../login';"><a class="navbar-text">Login</a></li><hr>
+  <li class="navbar-item" onclick="location.href='../registration';"><a class="navbar-text">Register</a></li>
 </right>
 </ul>
-<div></div>
+<main>
+<div class="centered">
+  <img style="width: 50px; padding: 0 50%; transform: translateX(-25px);" src="../Pictures/like.png" alt="like">
+  Section 1
+</div>
+<hr>
+<div>
+  Section 2
+</div>
+<hr>
+<div>
+  Section 3
+</div>
+</main>
+<!--
+<footer>
+  <hr>
+</footer>
+-->
 </body>
 </html>
