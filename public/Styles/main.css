@@ -1,0 +1,85 @@
+* {
+    transition: all 200ms;
+}
+
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+
+    --border: solid 1px gray;
+    --inner-glow: inset 0 0 2px
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    min-width: 310px;
+}
+
+.navbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 2%;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 45px;
+    padding: 0;
+}
+
+.side-container {
+    flex: content;
+    display: inline-flex;
+    background-color: white;
+    border: var(--border);
+    box-shadow: 0 2px 5px lightgray;
+}
+
+right {
+    justify-content: flex-end;
+}
+
+.navbar-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+    padding: 0 10px;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    background-color: black;
+    border-left: var(--border)
+}
+
+.navbar-item:hover {
+    /*box-shadow: var(--inner-glow) darkgray;*/
+    background-color: rgb(61, 61, 61);
+}
+
+.navbar-item:active {
+    background-color: lightgray;
+}
+
+right .navbar-item {
+    border-left: solid 0 black;
+    border-right: var(--border)
+}
+
+.navbar-text {
+    margin: auto;
+    color: white;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+}
+
+.active {
+    background-color: white;
+}
+
+.active a {
+    color: black;
+}
