@@ -108,19 +108,29 @@ left li:last-child {
 
 header {
     width: 100%;
+    height: 250%;
     margin: 0 auto;
     justify-self: center;
-    background-color: lightgreen;
+    background-color: white;
     border: 1px solid lightgray;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 1px 4px 1px lightgray;
 }
 
 h1 {
+    color: black;
     margin: 0 auto;
     text-align: center;
     font-size: 80px;
-    margin: 5% 0 5% 0;
+    margin: 5% 0 8% 0;
+}
+
+hr.colored {
+    background-color: black;
+    border: 0;
+    height: 1px;
+    margin: 0.5% 5%;
+    bottom: 0;
 }
 
 main {
@@ -131,8 +141,12 @@ main {
     background-color: white;
     font-size: 20px;
     border: 1px solid lightgray;
-    border-radius: 10px;
+    border-radius: 0 0 10px 10px;
     box-shadow: 0 1px 4px 1px lightgray;
+}
+
+.section {
+    padding: 20px
 }
 
 .centered {
@@ -152,3 +166,32 @@ footer {
 }
 
 /* FOOTER-e */
+
+/* RESPONSIVE */
+@media only screen and (max-width: 600px) {
+    body, html {
+        margin: 0;
+        padding: 0;
+        background-color: rgb(245, 245, 245);
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    header {
+        border-radius: 0;
+    }
+
+    h1 {
+        margin: 5% 0 5% 0;
+        font-size: 60px;
+    }
+    
+    main {
+        width: 100%;
+        margin-top: 20px;
+        padding-top: 0;
+        border-radius: 0;
+    }
+}

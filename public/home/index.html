@@ -8,9 +8,10 @@
   <title>Home</title>
 </head>
 <body>
-<header>
-  <h1>Rting</h1>
-</header>
+<header style="    position: -webkit-sticky;
+position: sticky;
+top: 0;
+z-index: 999;">
 <ul class="navbar">
 <left class="side-container">
   <li class="navbar-item active" onclick="location.href='../home';"><a class="navbar-text">Home</a></li><hr>
@@ -21,24 +22,15 @@
   <li class="navbar-item" onclick="location.href='../registration';"><a class="navbar-text">Register</a></li>
 </right>
 </ul>
+</header>
+
 <main>
-<div class="centered">
-  <img style="width: 50px; padding: 0 50%; transform: translateX(-25px);" src="../Pictures/like.png" alt="like">
-  Section 1
-</div>
-<hr>
-<div>
-  Section 2
-</div>
-<hr>
-<div>
-  Section 3
+<div class="section centered">
+<img style="width: 50px; padding: 0 50%; transform: translateX(-25px);" src="../Pictures/like.png" alt="like">
+<a href="../Extension.zip" download="extension">
+  <p>Download</p>
+</a>
 </div>
 </main>
-<!--
-<footer>
-  <hr>
-</footer>
--->
 </body>
 </html>
