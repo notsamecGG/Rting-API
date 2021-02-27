@@ -1,5 +1,6 @@
 const express = require('express');
 const queue = require('express-queue');
+const firebase = require('firebase');
 const like = require('./Modules/like_module');
 const c = require('./Modules/counter_module');
 const AccActions = require('./Modules/account_actions');
@@ -7,11 +8,24 @@ const consts = require('./Modules/const');
 const app = express();
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Port: ${port}`))
+//express config
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log(`Port: ${PORT}`))
 app.use(express.static('public'));
 app.use(express.json());
 app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
+
+//firebase config
+firebase.initializeApp({ 
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID
+});
+var database = firebase.database();
 
 app.post('/rating', (request, response) => {
     const url = request.query.url;
