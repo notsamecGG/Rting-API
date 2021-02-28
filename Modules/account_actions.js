@@ -1,13 +1,12 @@
 //ltt - Long term token
-const Datastore = require('nedb-async');
+const Firebase = require('fbdb');
 const TokenGenerator = require('uuid-token-generator');
 const consts = require('./const');
 
-const database = new Datastore.AsyncNedb(`Accounts/all_data.db`);
-database.loadDatabase();
+const database = Firebase.Init(`Accounts/`);
 const tokgen = new TokenGenerator();
 
-module.exports = { Register: Register,Login: Login, TokenVerify: TokenVerify }
+module.exports = { Register: Register, Login: Login, TokenVerify: TokenVerify }
 
 async function Register(username, firstname, email, password, ip) {
     if(await CheckMail(email)){
@@ -17,7 +16,7 @@ async function Register(username, firstname, email, password, ip) {
     } else {
         const token = tokgen.generate();
         const ltt = new TokenGenerator(256).generate();
-        await database.asyncInsert({
+        await database.push({
             _username: username, 
             _firstname: firstname, 
             _email: email,
@@ -25,33 +24,29 @@ async function Register(username, firstname, email, password, ip) {
             _token: token,
             _ltt: ltt,
             _ips: [ip]});
-        const id = await database.asyncFindOne({_username: username})._id;
-        console.log('x');
         console.log(await Login(username, false, password, ip));
         return await Login(username, false, password, ip);
     }
 }
 
 async function CheckMail(email) {
-    let result = await database.asyncFindOne({_email: email});
-    if (result) return true;
-    else return false;
+    let result = await database.orderByChild('_email').equalTo(email).get();
+    return result.exists() ? true : false;
 }
 
 async function CheckUsername(username) {
-    let result = await database.asyncFindOne({_username: username});
-    if (result) return true;
-    else return false;
+    let result = await database.orderByChild('_username').equalTo(username).get();
+    return result.exists() ? true : false;
 }
 
 async function Login(entry, action, password, ip){
     var acc = (action) 
-    ? (await database.asyncFindOne({_email: entry})) 
-    : (await database.asyncFindOne({_username: entry}));
+    ? (await database.orderByChild('_email').equalTo(entry)) 
+    : (await database.orderByChild('_username').equalTo(entry));
     if(acc && password == acc._password){
         if(!acc._ips.includes(ip)) {
             //verify
-            database.asyncUpdate({_id: acc._id}, { $push: {_ips: ip}}, {});
+            database.child(acc._id).push({_ips: ip});
         }
         return {userid: acc._id, token: acc._token, ltt: acc._ltt};
     } else {
@@ -75,11 +70,11 @@ async function TokenVerify(data, ip) {
         throw consts.ERRORS.DATA_NOT_AVIABLE;
     }
 
-    var acc = await database.asyncFindOne({_id: userid});
+    var acc = await database.child(userid).get().val();
     if(acc){
         if(!acc._ips.includes(ip)) {
             //verify
-            database.asyncUpdate({_id: acc._id}, { $push: {_ips: ip}}, {});
+            database.child(acc._id).push({_ips: ip});
         }
         if(acc._token == token){
             return finalmessage;
@@ -90,7 +85,7 @@ async function TokenVerify(data, ip) {
 }
 
 async function GenerateToken(userid, longTermToken) {
-    var acc = await database.asyncFindOne({_userid: userid});
+    var acc = await database.chilf(userid).get().val();
     if(acc._ltt == longTermToken) {
         const token = tokgen.generate();
         UpdateToken(userid, token);
@@ -101,7 +96,7 @@ async function GenerateToken(userid, longTermToken) {
 }
 
 async function UpdateToken(userid, token) {
-    database.asyncUpdate({_id: userid}, { $set: {_token: token}}, {});
+    database.child(userid).update({_token: token});
 }
 
 //pass token from register and login

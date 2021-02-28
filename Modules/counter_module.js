@@ -1,10 +1,9 @@
-const fs = require('fs');
+const Firebase = require('./fbdb');
 
 exports.Counter = class{
     constructor(url){
-        this.like_filename = `./Pages/${url}/like_counter.txt`;
-        this.dislike_filename = `./Pages/${url}/dislike_counter.txt`;
-        this.path = `./Pages/${url}`;
+        this.like_file = Firebase.Init(`Pages/${url}/likes`);
+        this.dislike_file = Firebase.Init(`Pages/${url}/dislikes`);
         this.url = url;
         this.likes = 0;
         this.dislikes = 0;  
@@ -17,21 +16,19 @@ exports.Counter = class{
     }
     
     _getValues = async () => {
-        const like_filename = this.like_filename;
-        const dislike_filename = this.dislike_filename;
+        const like_file = this.like_file;
+        const dislike_file = this.dislike_file;
         const path = this.path;
 
-        let Check = async (filename) => {
-            if(!fs.existsSync(path))
-                await fs.mkdirSync(path);
-            if(!fs.existsSync(filename))
-                await fs.writeFileSync(filename, '0');
+        let Check = async (ref) => {
+            if(!ref.exists())
+                await ref.set({counter: '0'});
             
-            return await fs.readFileSync(filename, 'utf-8');
+            return await ref.get().val();
         }
 
-        const likes = parseInt(await Check(like_filename), '10');
-        const dislikes = parseInt(await Check(dislike_filename), '10');
+        const likes = parseInt(await Check(like_file), '10');
+        const dislikes = parseInt(await Check(dislike_file), '10');
 
         this.likes = likes;
         this.dislikes = dislikes;
@@ -45,9 +42,9 @@ exports.Counter = class{
         const dislikes = values.dislikes; 
 
         if(action == 1){
-            return await AddValueToFile(this.like_filename, likes, value, { dislikes: dislikes, action: 1});
+            return await AddValueToFile(this.like_file, likes, value, { dislikes: dislikes, action: 1});
         } else if (action == -1) {
-            return await AddValueToFile(this.dislike_filename, dislikes, value, { likes: likes, action: -1});
+            return await AddValueToFile(this.dislike_file, dislikes, value, { likes: likes, action: -1});
         }
         return await this._getValues();
     }
@@ -57,13 +54,13 @@ exports.Counter = class{
     remove = async action => await this._addValue(action, -1);
 }
 
-async function AddValueToFile(filename, data, value, callback_obj){
+async function AddValueToFile(file, data, value, callback_obj){
     const action = callback_obj.action;
     const count = data + value;
     return await writeFile();
 
     async function writeFile(){
-        await fs.writeFileSync(filename, `${count}`);
+        await file.update({count: count});
         if(action == 1) {
             callback_obj.likes = count;
         } else if (action == -1) {
