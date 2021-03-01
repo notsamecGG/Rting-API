@@ -1,5 +1,5 @@
 //ltt - Long term token
-const Firebase = require('fbdb');
+const Firebase = require('./fbdb');
 const TokenGenerator = require('uuid-token-generator');
 const consts = require('./const');
 

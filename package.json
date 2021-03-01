@@ -4,6 +4,7 @@
   "description": "Server to handle tasks from rting extension",
   "main": "index.js",
   "dependencies": {
+    "@firebase/database": "^0.9.4",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
