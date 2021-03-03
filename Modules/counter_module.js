@@ -2,8 +2,7 @@ const Datastore = require('./fbdb');
 
 exports.Counter = class{
     constructor(url){
-        this.like_file = new Datastore.Database(`pages/${url}/likes`);
-        this.dislike_file = new Datastore.Database(`pages/${url}/dislikes`);
+        this.database = new Datastore.Database('pages');
         this.url = url;
         this.likes = 0;
         this.dislikes = 0;  
@@ -16,57 +15,26 @@ exports.Counter = class{
     }
     
     _getValues = async () => {
-        const like_file = this.like_file;
-        const dislike_file = this.dislike_file;
-        const path = this.path;
+        //Get values (likes, dislikes) form database by id (url)
+        const likes, dislikes = (await this.database.Get(this.url)).data;
 
-        let Check = async (ref) => {
-            if(!ref.exists())
-                await ref.set({counter: '0'});
-            
-            return await ref.get().val();
-        }
-
-        const likes = parseInt(await Check(like_file), '10');
-        const dislikes = parseInt(await Check(dislike_file), '10');
-
-        this.likes = likes;
-        this.dislikes = dislikes;
+        this.likes, this.dislikes = likes, dislikes;
 
         return {likes: likes, dislikes: dislikes};
     }
 
     _addValue = async (action, value) => {
         const values = await this._getValues();
-        const likes = values.likes;
-        const dislikes = values.dislikes; 
+        const likes, dislikes = values;
 
-        if(action == 1){
-            return await AddValueToFile(this.like_file, likes, value, { dislikes: dislikes, action: 1});
-        } else if (action == -1) {
-            return await AddValueToFile(this.dislike_file, dislikes, value, { likes: likes, action: -1});
+        if(action == 1) {
+            this.database.Update(this.url, {likes: likes + value});
+        } else if(action == -1) {
+            this.database.Update(this.url, {dislikes: dislikes + value});
         }
-        return await this._getValues();
     }
 
     add = async action => await this._addValue(action, 1);
 
     remove = async action => await this._addValue(action, -1);
-}
-
-async function AddValueToFile(file, data, value, callback_obj){
-    const action = callback_obj.action;
-    const count = data + value;
-    return await writeFile();
-
-    async function writeFile(){
-        await file.Add('count', count);
-        if(action == 1) {
-            callback_obj.likes = count;
-        } else if (action == -1) {
-            callback_obj.dislikes = count;
-        }
-
-        return callback_obj;
-    }
 }

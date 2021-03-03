@@ -6,7 +6,7 @@ const consts = require('./const');
 const database = new Datastore.Database(`accounts`);
 const tokgen = new TokenGenerator();
 
-module.exports = { Register: Register, Login: Login, TokenVerify: TokenVerify }
+module.exports = { Register, Login, TokenVerify }
 
 async function Register(username, firstname, email, password, ip) {
     console.log('register begin');
@@ -17,7 +17,7 @@ async function Register(username, firstname, email, password, ip) {
     } else {
         const token = tokgen.generate();
         const ltt = new TokenGenerator(256).generate();
-        await database.Add(username, {
+        await database.Add({
             _username: username, 
             _firstname: firstname, 
             _email: email,
@@ -25,8 +25,6 @@ async function Register(username, firstname, email, password, ip) {
             _token: token,
             _ltt: ltt,
             _ips: [ip]});
-        console.log('x');
-        console.log(await Login(username, false, password, ip));
         return await Login(username, false, password, ip);
     }
 }
@@ -42,15 +40,12 @@ async function CheckUsername(username) {
 }
 
 async function Login(entry, action, password, ip){
-    var acc = (action) 
-    ? (await database.FindOne('_email', entry)) 
-    : (await database.FindOne('_username', entry));
+    var userid, acc = (action) 
+    ? ((await database.Find('_email', entry))) 
+    : ((await database.Find('_username', entry)));
     if(acc && password == acc._password){
-        if(!acc._ips.includes(ip)) {
-            //verify
-            database.child(acc._id).push({_ips: ip});
-        }
-        return {userid: acc._id, token: acc._token, ltt: acc._ltt};
+        database.UpdateIPs(userid, ip);
+        return {userid: userid, token: acc._token, ltt: acc._ltt};
     } else {
         throw consts.ERRORS.BAD_ENTRY;
     }
@@ -65,19 +60,13 @@ async function TokenVerify(data, ip) {
             token = GenerateToken(userid, data.longTermToken);
             finalmessage.token = token;
         }
-        /*if(!token) {
-            throw consts.ERRORS.BAD_ENTRY;
-        }*/
     } else {
         throw consts.ERRORS.DATA_NOT_AVIABLE;
     }
 
-    var acc = await database.child(userid).get().val();
+    var acc = (await database.Get(userid)).data;
     if(acc){
-        if(!acc._ips.includes(ip)) {
-            //verify
-            database.child(acc._id).push({_ips: ip});
-        }
+        database.UpdateIPs(userid, ip);
         if(acc._token == token){
             return finalmessage;
         }
@@ -87,7 +76,7 @@ async function TokenVerify(data, ip) {
 }
 
 async function GenerateToken(userid, longTermToken) {
-    var acc = await database.chilf(userid).get().val();
+    var acc = (await database.Get(userid)).data;
     if(acc._ltt == longTermToken) {
         const token = tokgen.generate();
         UpdateToken(userid, token);
@@ -98,7 +87,7 @@ async function GenerateToken(userid, longTermToken) {
 }
 
 async function UpdateToken(userid, token) {
-    database.child(userid).update({_token: token});
+    database.Update(id, {_token: token});
 }
 
 //pass token from register and login

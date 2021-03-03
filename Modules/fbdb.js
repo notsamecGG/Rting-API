@@ -1,5 +1,5 @@
 const firebase = require('firebase/app');
-const { copyFileSync } = require('fs');
+const admin = require('firebase-admin');
 require('firebase/firestore');
 require('dotenv').config();
 
@@ -27,28 +27,50 @@ class Database {
         this.database = this.root.collection(path);
     }
 
-    FindOne = async function(id, value){
+    Get = async (id) => {
+        const doc = await this.database.doc(id).get();
+        if(!doc)
+            throw new Error(`FBDB: Get not found; id: {${id}}`);
+        return {data: doc.data()};
+    }
+
+    Find = async (id, value) => {
         const doc = (await this.database.where(id, '==', value).get()).docs[0];
         if(!doc)
-            throw new Error(`FBDB: Not found; id: {${id}}, value: {${value}}`)
+            throw new Error(`FBDB: Not found; id: {${id}}, value: {${value}}`);
         return {id: doc.id, data: doc.data()};
     }
 
-    Check = async function(id, value){
+    Check = async (id, value) => {
         const doc = (await this.database.where(id, '==', value).get()).docs[0];
         return (doc) ? true : false;
     }
 
-    Add = async function(data){
-        this.database.add(data);
+    Add = async (data) => {
+        return (await this.database.add(data)).id;
     }
 
-    InitDB = async function(){
+    Set = async (id, data) => {
+        this.database.doc(id).set(data);
+    }
+
+    Update = async (id, update) => {
+        this.database.doc(id).update(update);
+    }
+
+    UpdateIPs = async (accid, ip) => {
+        await (this.database.doc(accid).where('_ips', 'array-contains',
+        ip).get()).docs[0].update({
+            _ips: admin.firestore.FieldValue.arrayUnion(ip)
+        });
+    }
+
+    InitDB = async () => {
         await _defaultInit();
         return await firebase.firestore();
     }
     
-    Init = async function(path){
+    Init = async (path) => {
         await _defaultInit();
         return await firebase.firestore().collection(path);
     }

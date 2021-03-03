@@ -11,6 +11,7 @@
     "express": "^4.17.1",
     "express-queue": "0.0.12",
     "firebase": "^8.2.9",
+    "firebase-admin": "^9.5.0",
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
     "nedb": "^1.8.0",
