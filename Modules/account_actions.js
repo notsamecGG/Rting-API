@@ -1,14 +1,15 @@
 //ltt - Long term token
-const Firebase = require('./fbdb');
+const Datastore = require('./fbdb');
 const TokenGenerator = require('uuid-token-generator');
 const consts = require('./const');
 
-const database = Firebase.Init(`Accounts/`);
+const database = new Datastore.Database(`accounts`);
 const tokgen = new TokenGenerator();
 
 module.exports = { Register: Register, Login: Login, TokenVerify: TokenVerify }
 
 async function Register(username, firstname, email, password, ip) {
+    console.log('register begin');
     if(await CheckMail(email)){
         throw consts.ERRORS.EMAIL_USED;
     } else if (await CheckUsername(username)){
@@ -16,7 +17,7 @@ async function Register(username, firstname, email, password, ip) {
     } else {
         const token = tokgen.generate();
         const ltt = new TokenGenerator(256).generate();
-        await database.push({
+        await database.Add(username, {
             _username: username, 
             _firstname: firstname, 
             _email: email,
@@ -24,25 +25,26 @@ async function Register(username, firstname, email, password, ip) {
             _token: token,
             _ltt: ltt,
             _ips: [ip]});
+        console.log('x');
         console.log(await Login(username, false, password, ip));
         return await Login(username, false, password, ip);
     }
 }
 
 async function CheckMail(email) {
-    let result = await database.orderByChild('_email').equalTo(email).get();
-    return result.exists() ? true : false;
+    console.log('mailcheck');
+    return await database.Check('_email', email);
 }
 
 async function CheckUsername(username) {
-    let result = await database.orderByChild('_username').equalTo(username).get();
-    return result.exists() ? true : false;
+    console.log('unamecheck');
+    return await database.Check('_username', username);
 }
 
 async function Login(entry, action, password, ip){
     var acc = (action) 
-    ? (await database.orderByChild('_email').equalTo(entry)) 
-    : (await database.orderByChild('_username').equalTo(entry));
+    ? (await database.FindOne('_email', entry)) 
+    : (await database.FindOne('_username', entry));
     if(acc && password == acc._password){
         if(!acc._ips.includes(ip)) {
             //verify

@@ -1,8 +1,7 @@
 const firebase = require('firebase/app');
-require('firebase/database');
+const { copyFileSync } = require('fs');
+require('firebase/firestore');
 require('dotenv').config();
-
-module.exports = { InitDB, Init };
 
 function _defaultInit() {
     const config = { 
@@ -13,25 +12,46 @@ function _defaultInit() {
         storageBucket: "rting-db.appspot.com",
         messagingSenderId: "605006049438",
         appId: "1:605006049438:web:c13e00a67c33d36e3e0b8f",
-        
-        // apiKey: process.env.API_KEY,
-        // authDomain: process.env.AUTH_DOMAIN,
-        // projectId: process.env.PROJECT_ID,
-        // storageBucket: process.env.STORAGE_BUCKET,
-        // messagingSenderId: process.env.MESSAGING_SENDER_ID,
-        // appId: process.env.APP_ID,
-        // measurementId: process.env.MEASUREMENT_ID //optional
     };
 
-    firebase.initializeApp(config);
+    if (firebase.apps.length === 0) {
+        firebase.initializeApp(config);
+    }
 }
 
-async function InitDB() {
-    await _defaultInit();
-    return await firebase.database();
+class Database {
+    constructor(path) {
+        _defaultInit();
+        this.root = firebase.firestore();
+        this.root.settings({ timestampsInSnapshots: true });
+        this.database = this.root.collection(path);
+    }
+
+    FindOne = async function(id, value){
+        const doc = (await this.database.where(id, '==', value).get()).docs[0];
+        if(!doc)
+            throw new Error(`FBDB: Not found; id: {${id}}, value: {${value}}`)
+        return {id: doc.id, data: doc.data()};
+    }
+
+    Check = async function(id, value){
+        const doc = (await this.database.where(id, '==', value).get()).docs[0];
+        return (doc) ? true : false;
+    }
+
+    Add = async function(data){
+        this.database.add(data);
+    }
+
+    InitDB = async function(){
+        await _defaultInit();
+        return await firebase.firestore();
+    }
+    
+    Init = async function(path){
+        await _defaultInit();
+        return await firebase.firestore().collection(path);
+    }
 }
 
-async function Init(path){
-    await _defaultInit();
-    return await firebase.database().ref();
-}
+module.exports = { Database };

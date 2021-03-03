@@ -1,9 +1,9 @@
-const Firebase = require('./fbdb');
+const Datastore = require('./fbdb');
 
 exports.Counter = class{
     constructor(url){
-        this.like_file = Firebase.Init(`Pages/${url}/likes`);
-        this.dislike_file = Firebase.Init(`Pages/${url}/dislikes`);
+        this.like_file = new Datastore.Database(`pages/${url}/likes`);
+        this.dislike_file = new Datastore.Database(`pages/${url}/dislikes`);
         this.url = url;
         this.likes = 0;
         this.dislikes = 0;  
@@ -60,7 +60,7 @@ async function AddValueToFile(file, data, value, callback_obj){
     return await writeFile();
 
     async function writeFile(){
-        await file.update({count: count});
+        await file.Add('count', count);
         if(action == 1) {
             callback_obj.likes = count;
         } else if (action == -1) {

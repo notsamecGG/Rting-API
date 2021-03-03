@@ -7,6 +7,7 @@ function HandleResponse(display, response_data) {
     console.log(response_data);
     
     if(status == 0) {
+        console.error(response_data.msg)
         display.textContent = response_data.msg.message;
     }
 
