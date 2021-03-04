@@ -30,30 +30,27 @@ async function Register(username, firstname, email, password, ip) {
 }
 
 async function CheckMail(email) {
-    console.log('mailcheck');
     return await database.Check('_email', email);
 }
 
 async function CheckUsername(username) {
-    console.log('unamecheck');
     return await database.Check('_username', username);
 }
 
 async function Login(entry, action, password, ip){
-    var userid, acc = (action) 
+    const {id, data} = (action) 
     ? ((await database.Find('_email', entry))) 
     : ((await database.Find('_username', entry)));
-    if(acc && password == acc._password){
-        database.UpdateIPs(userid, ip);
-        return {userid: userid, token: acc._token, ltt: acc._ltt};
+    if(data && password == data._password){
+        // database.UpdateIPs(id, ip);
+        return {userid: id, token: data._token, ltt: data._ltt};
     } else {
         throw consts.ERRORS.BAD_ENTRY;
     }
 }
 
 async function TokenVerify(data, ip) {
-    var userid = data.userid;
-    var token = data.token;
+    var {userid, token} = data;
     var finalmessage = {};
     if(userid) {
         if(!token) {
@@ -66,7 +63,7 @@ async function TokenVerify(data, ip) {
 
     var acc = (await database.Get(userid)).data;
     if(acc){
-        database.UpdateIPs(userid, ip);
+        // database.UpdateIPs(userid, ip);
         if(acc._token == token){
             return finalmessage;
         }

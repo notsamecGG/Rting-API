@@ -1,37 +1,30 @@
-const Datastore = require('nedb-async');
+const Datastore = require('./fbdb');
 const c = require('./counter_module');
 
-/*
-database
-    user: 'Sheefman',
-    action: '-1/0/1'
-*/
+// cll = collection
+const cll = 'useractions';
 
 exports.CheckEntries = async function(url, userid, action){
-    const database = new Datastore.AsyncNedb(`Pages/${url}/rating.db`);
+    const database = new Datastore.Database('pages');
     const counter = await new c.Counter(url);
-    await database.loadDatabase();
 
-    let entry = await database.asyncFind({user: userid});
-    entry = entry[0];
+    let entry = (await database.FindChild(url, cll, userid)).data;
+    console.log({entry: entry});
 
     if (entry){
         const e_action = entry.action;
         const values = await counter.remove(e_action);
 
         if(e_action != action){
-            database.asyncUpdate({user: userid}, { $set: { 'action': action}}, {});
+            database.UpdateChild(url, cll, userid, { action: action });
         } else {
-            database.asyncUpdate({user: userid}, { $set: { 'action': 0}}, {});
+            database.UpdateChild(url, cll, userid, { action: 0 });
+            console.log('likemodule returns values');
             return values;
         }
     } else {
-        await database.asyncInsert({
-            user: userid,
-            action: action
-        });
+        await database.SetPath(url, cll, userid, {action: action});
     }
 
     return await counter.add(action);
-
 }

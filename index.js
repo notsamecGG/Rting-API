@@ -22,7 +22,6 @@ app.post('/rating', (request, response) => {
 
     AccActions.TokenVerify(cookies, request.ip)
     .then(async (_) => {
-        console.log(cookies);
         if(!cookies.token){
             response.json({
                 status: consts.STATUSES.FAILED, 
@@ -33,9 +32,8 @@ app.post('/rating', (request, response) => {
 
         const userid = cookies.userid;
         const action = body.action;
-    
         const obj = await like.CheckEntries(url, userid, action);
-    
+        console.log('obj', obj);
         return response.json({
             status: consts.STATUSES.SUCCESS,
             actual_action: obj.action,
